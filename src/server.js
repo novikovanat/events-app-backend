@@ -2,13 +2,14 @@ import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import eventRouters from './routers/eventsRouters.js';
 import env from './utils/env.js';
+import { notFoundHandler, errorHandler } from './middleware/errorHandlers.js';
 
 const startServer = () => {
-    dotenv.config();
+  dotenv.config();
   const app = express();
-const port = Number(env('PORT'));
- 
+  const port = Number(env('PORT'));
 
   app.use(
     pino({
@@ -18,12 +19,9 @@ const port = Number(env('PORT'));
     }),
   );
   app.use(cors());
-
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello World',
-    });
-  });
+  app.use(eventRouters);
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
 
   app.listen(port, () => console.log(`Server runing on port ${port}`));
 };
