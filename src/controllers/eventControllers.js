@@ -1,10 +1,11 @@
 import {
   addEvent,
-  getAllEvents,
+  getEvents,
   getEventById,
   getAllParticipantsEv,
   addParticipant
 } from '../servises/eventServises.js';
+import parsePaginationParams from '../utils/parsePaginationParams.js';
 
 export const addEventController = async (req, res) => {
   const payload = req.body;
@@ -16,8 +17,9 @@ export const addEventController = async (req, res) => {
   });
 };
 
-export const getAllEventsController = async (req, res) => {
-  const events = await getAllEvents();
+export const getEventsController = async (req, res) => {
+  const { page, perPage } = parsePaginationParams(req.query);
+  const events = await getEvents(page, perPage );
   res.json({
     status: 200,
     data: events,

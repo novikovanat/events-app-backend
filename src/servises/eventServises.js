@@ -1,9 +1,13 @@
 import eventsCollection from '../db/eventSchema.js';
 import participantsCollection from '../db/participantSchema.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getAllEvents = async () => {
-  const events = await eventsCollection.find();
-  return events;
+export const getEvents = async (page, perPage) => {
+  const skip = (page - 1) * perPage;
+  const events = await eventsCollection.find().skip(skip).limit(perPage);
+  const total = await eventsCollection.countDocuments();
+  const paginationData = calculatePaginationData(total, perPage, page);
+  return {events, ...paginationData};
 };
 
 export const getEventById = async (eventId) => {
@@ -22,6 +26,9 @@ export const getAllParticipantsEv = async (eventId) => {
 };
 
 export const addParticipant = async (payload, eventId) => {
-  const newParticipant = participantsCollection.create({ ...payload, eventId: eventId });
+  const newParticipant = participantsCollection.create({
+    ...payload,
+    eventId: eventId,
+  });
   return newParticipant;
 };

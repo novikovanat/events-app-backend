@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-  getAllEventsController,
+  getEventsController,
   getEventByIdController,
   addEventController,
   getAllParticipantsEvController,
@@ -16,7 +16,7 @@ eventRouters.get('/', (req, res) => {
   });
 });
 
-eventRouters.get('/events', ctrlWrapper(getAllEventsController));
+eventRouters.get('/events', ctrlWrapper(getEventsController));
 
 eventRouters.get('/events/:eventId', ctrlWrapper(getEventByIdController));
 
