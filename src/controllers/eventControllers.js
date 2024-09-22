@@ -2,13 +2,12 @@ import {
   addEvent,
   getAllEvents,
   getEventById,
+  getAllParticipantsEv,
+  addParticipant
 } from '../servises/eventServises.js';
 
 export const addEventController = async (req, res) => {
   const payload = req.body;
-  console.log('==========req==========================');
-  console.log(req.body);
-  console.log('====================================');
   const event = await addEvent(payload);
   res.status(201).json({
     status: 201,
@@ -37,5 +36,26 @@ export const getEventByIdController = async (req, res, next) => {
     status: 200,
     data: event,
     message: `Successfully found event with id ${eventId}`,
+  });
+};
+
+export const getAllParticipantsEvController = async (req, res) => {
+  const {eventId} = req.params;
+  const participants = await getAllParticipantsEv(eventId);
+  res.json({
+    status: 200,
+    data: participants,
+    message: 'Successfully found participants!',
+  });
+};
+
+export const addParticipantController = async (req, res) => {
+  const {body} = req;
+  const {eventId} = req.params;
+  const participant = await addParticipant(body, eventId);
+  res.status(201).json({
+    status: 201,
+    data: participant,
+    message: 'New event successfully added',
   });
 };
