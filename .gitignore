@@ -1,7 +1,26 @@
-/node_modules
 
-.env
+# Logs
+logs
+*.log
+npm-debug.log*
+node_modules
+dist
+dist-ssr
+*.local
 
-.vscode
-.DS_Store
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
 .idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# files
+events.json
+
+# environment
+.env
