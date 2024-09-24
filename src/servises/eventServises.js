@@ -1,6 +1,7 @@
 import eventsCollection from '../db/eventSchema.js';
 import participantsCollection from '../db/participantSchema.js';
 import { calculatePaginationData } from '../utils/calculatePaginationData.js';
+import createHttpError from 'http-errors';
 
 export const getEvents = async (page, perPage) => {
   const skip = (page - 1) * perPage;
@@ -16,19 +17,24 @@ export const getEventById = async (eventId) => {
 };
 
 export const addEvent = async (payload) => {
-  const newEvent = eventsCollection.create({ ...payload });
+  const newEvent = await eventsCollection.create({ ...payload });
   return newEvent;
 };
 
 export const getAllParticipantsEv = async (eventId) => {
-  const participants = participantsCollection.find({ eventId: eventId });
+  const participants = await participantsCollection.find({ eventId: eventId });
   return participants;
 };
 
 export const addParticipant = async (payload) => {
-  console.log('====================================');
-  console.log(payload);
-  console.log('====================================');
-  const newParticipant = participantsCollection.create(payload);
+  const { email, eventId } = payload;
+  const isExist = await participantsCollection.findOne({
+    eventId: eventId,
+    email: email,
+  });
+  if (isExist) {
+    throw createHttpError(409, 'This email already in use');
+  }
+  const newParticipant = await participantsCollection.create(payload);
   return newParticipant;
 };

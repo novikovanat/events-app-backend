@@ -3,9 +3,10 @@ import {
   getEvents,
   getEventById,
   getAllParticipantsEv,
-  addParticipant
+  addParticipant,
 } from '../servises/eventServises.js';
 import parsePaginationParams from '../utils/parsePaginationParams.js';
+import createHttpError from 'http-errors';
 
 export const addEventController = async (req, res) => {
   const payload = req.body;
@@ -19,7 +20,7 @@ export const addEventController = async (req, res) => {
 
 export const getEventsController = async (req, res) => {
   const { page, perPage } = parsePaginationParams(req.query);
-  const events = await getEvents(page, perPage );
+  const events = await getEvents(page, perPage);
   res.json({
     status: 200,
     data: events,
@@ -42,7 +43,7 @@ export const getEventByIdController = async (req, res, next) => {
 };
 
 export const getAllParticipantsEvController = async (req, res) => {
-  const {eventId} = req.params;
+  const { eventId } = req.params;
   const participants = await getAllParticipantsEv(eventId);
   res.json({
     status: 200,
@@ -51,10 +52,10 @@ export const getAllParticipantsEvController = async (req, res) => {
   });
 };
 
-export const addParticipantController = async (req, res) => { 
-  const {body} = req;
-  const {eventId} = req.params;
-  const participant = await addParticipant({... body, eventId});
+export const addParticipantController = async (req, res, next) => {
+  const { body } = req;
+  const { eventId } = req.params;
+  const participant = await addParticipant({ ...body, eventId });
   res.status(201).json({
     status: 201,
     data: participant,
