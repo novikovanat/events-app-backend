@@ -51,13 +51,13 @@ export const getAllParticipantsEvController = async (req, res) => {
   });
 };
 
-export const addParticipantController = async (req, res) => {
+export const addParticipantController = async (req, res) => { 
   const {body} = req;
   const {eventId} = req.params;
-  const participant = await addParticipant(body, eventId);
+  const participant = await addParticipant({... body, eventId});
   res.status(201).json({
     status: 201,
     data: participant,
-    message: 'New event successfully added',
+    message: 'New participant successfully added',
   });
 };

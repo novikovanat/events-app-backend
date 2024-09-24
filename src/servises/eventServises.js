@@ -7,7 +7,7 @@ export const getEvents = async (page, perPage) => {
   const events = await eventsCollection.find().skip(skip).limit(perPage);
   const total = await eventsCollection.countDocuments();
   const paginationData = calculatePaginationData(total, perPage, page);
-  return {events, ...paginationData};
+  return { events, ...paginationData };
 };
 
 export const getEventById = async (eventId) => {
@@ -25,10 +25,10 @@ export const getAllParticipantsEv = async (eventId) => {
   return participants;
 };
 
-export const addParticipant = async (payload, eventId) => {
-  const newParticipant = participantsCollection.create({
-    ...payload,
-    eventId: eventId,
-  });
+export const addParticipant = async (payload) => {
+  console.log('====================================');
+  console.log(payload);
+  console.log('====================================');
+  const newParticipant = participantsCollection.create(payload);
   return newParticipant;
 };

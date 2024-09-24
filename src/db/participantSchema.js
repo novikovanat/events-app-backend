@@ -12,7 +12,6 @@ const participantSchema = new Schema(
       type: String,
       validate: emailValidation,
       required: true,
-      unique: true,
     },
     dateOfBirth: {
       type: Date,
